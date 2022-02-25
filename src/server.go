@@ -2,18 +2,14 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 
 	"to-do-list-go/src/config"
 	"to-do-list-go/src/routes"
 )
 
-var (
-	db *gorm.DB = config.SetupDatabaseConnection()
-)
-
 func main() {
-	defer config.CloseDatabaseConnection(db)
+	config.DB = config.SetupDatabaseConnection()
+	defer config.CloseDatabaseConnection(config.DB) // defer statements delay the execution of the function or method or an anonymous method until the nearby functions returns (artinya jalan terus :D
 
 	app := gin.Default()
 	app.Use(func(c *gin.Context) {

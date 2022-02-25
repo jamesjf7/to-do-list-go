@@ -9,6 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func SetupDatabaseConnection() *gorm.DB {
 	errEnv := godotenv.Load()
 	if errEnv != nil {
@@ -22,13 +24,14 @@ func SetupDatabaseConnection() *gorm.DB {
 	dbName := os.Getenv("DB_NAME")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
-	print(dsn)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) // connect to database
 
 	if err != nil {
+		// The panic() function is inbuilt in Go Language and when it is raised, the code prints a panic message, and the function crashes.
 		panic("failed to connect database")
 	}
+	fmt.Println("Successfully connected to database!")
 	return db
 }
 
